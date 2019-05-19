@@ -1,0 +1,62 @@
+<nz-card nzTitle="Update Existing Order" [nzExtra]="extraTemplate">
+    <form nz-form [formGroup]="orderForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzFor="pickpoint">Pickpoint</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+                <nz-select formControlName="pickpointId" nzRequired nzShowSearch nzAllowClear nzPlaceHolder="Choose pickpoint">
+                    <nz-option *ngFor="let pickpoint of pickpoints$ | async" [nzLabel]="pickpoint.address"
+                        [nzValue]="pickpoint.id">
+                    </nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="orderForm.get('pickpointId')?.dirty && orderForm.get('pickpointId')?.errors">
+                    Please select pickpoint
+                </nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="count">Count</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+                <nz-input-number formControlName="count" [nzMin]="1" placeholder="Integer, more than 1">
+                </nz-input-number>
+                <nz-form-explain *ngIf="orderForm.get('count')?.dirty && orderForm.get('count')?.errors">
+                    Count should be integer more that 1
+                </nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="insurances">Insurances</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+                <nz-select formControlName="insurancesIds" nzMode="multiple" nzPlaceHolder="Please select insurances">
+                    <nz-option *ngFor="let insurance of insurances$ | async" [nzLabel]="insurance.type"
+                        [nzValue]="insurance.id">
+                    </nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="orderForm.get('insurancesIds')?.dirty && orderForm.get('insurancesIds')?.errors">
+                    You should select at least one insurance type
+                </nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="deliveryDate">Delivery</nz-form-label>
+            <nz-form-control [nzSpan]="20">
+                <nz-date-picker [nzDisabledDate]="disabledDate" formControlName="deliveryDate"></nz-date-picker>
+                <nz-form-explain *ngIf="orderForm.get('deliveryDate')?.dirty && orderForm.get('deliveryDate')?.errors">
+                    You should select delivery date
+                </nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary">Update</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-card>
+
+<ng-template #extraTemplate>
+    <button type="button" nz-button nzType="default" (click)="reset()" nzSize="small">Reset</button>
+</ng-template>

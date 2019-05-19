@@ -1,0 +1,26 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using TestApplication.Controllers.Responses;
+using TestApplication.Controllers.Responses.Factories;
+using TestApplication.Database;
+
+namespace TestApplication.Controllers
+{
+    [Route("api/[controller]"), ApiController]
+    public class PickpointsController : ControllerBase
+    {
+        public PickpointsController(WarehouseContext context)
+        {
+            Context = context;
+        }
+
+        public WarehouseContext Context { get; }
+
+        public async Task<IEnumerable<PickpointResponse>> GetAll()
+        {
+            return Context.Pickpoints.Select(PickpointResponseFactory.Convert);
+        }
+    }
+}

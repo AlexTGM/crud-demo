@@ -1,0 +1,44 @@
+<nz-card nzTitle="Orders Table">
+    <nz-table #dataSource [nzData]="(orderState$ |async).orders" [nzLoading]="(orderState$ |async).loading"
+        nzShowSizeChanger="true">
+        <thead>
+            <tr>
+                <th>Count</th>
+                <th nzCustomFilter>
+                    Good Name
+                    <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+                        <i nz-icon nzType="search" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+                        <div class="search-box">
+                            <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+                            <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                                Search
+                            </button>
+                            <button nz-button nzSize="small" (click)="reset()">Reset</button>
+                        </div>
+                    </nz-dropdown>
+                </th>
+                <th>Insurances</th>
+                <th>Options</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of dataSource.data" (click)="select(order)">
+                <td>{{ order.count }} pcs.</td>
+                <td>{{ order.good.name }}</td>
+                <td>
+                    <ul>
+                        <li *ngFor="let insurance of order.insurances">{{insurance.type}}</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Delivery Date: {{order.deliveryDate | date}}</li>
+                        <li>Pickpoint: {{order.pickpoint.address}}</li>
+                    </ul>
+                </td>
+                <td><i class="icon" nz-icon nzType="delete" nzTheme="outline" (click)="delete(order)"></i></td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
